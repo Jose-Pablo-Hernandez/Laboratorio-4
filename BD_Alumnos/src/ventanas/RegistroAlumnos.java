@@ -34,8 +34,6 @@ public class RegistroAlumnos extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         txt_nombre = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        txt_grupo = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -60,10 +58,6 @@ public class RegistroAlumnos extends javax.swing.JFrame {
         jLabel1.setText("Nombre:");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, -1, 20));
         getContentPane().add(txt_nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 20, 140, -1));
-
-        jLabel2.setText("Grupo:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, -1, -1));
-        getContentPane().add(txt_grupo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 278, -1));
 
         jButton1.setText("Registrar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -130,8 +124,8 @@ public class RegistroAlumnos extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //Codigo que permite insertar registros en al base de datos
         try {
-            Connection cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1/bd_ins", "root", "");
-            PreparedStatement pst = cn.prepareStatement("insert into Estudiantes values(?,?,?)");
+            Connection cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1/bd_estudiantes", "root", "");
+            PreparedStatement pst = cn.prepareStatement("insert into Estudiantes values(?,?,?,?,?,?,?)");
 
             pst.setString(1, "0");
             pst.setString(2, txt_ID.getText().trim());
@@ -141,16 +135,15 @@ public class RegistroAlumnos extends javax.swing.JFrame {
 
             pst.setString(6, txt_Correo.getText().trim());
             pst.setString(7, txt_Estado.getText().trim());
-            pst.setString(8, txt_grupo.getText().trim());
+           
             pst.executeUpdate();
             txt_ID.setText("");
             txt_nombre.setText("");
             txt_Direccion.setText("");
-
             txt_Tel.setText("");
             txt_Correo.setText("");
             txt_Estado.setText("");
-            txt_grupo.setText("");
+           
             
             label_status.setText("Registro exitoso.");
         } catch (Exception e) {
@@ -162,15 +155,21 @@ public class RegistroAlumnos extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         //Codigo que permite consultar registros en la base de datos
         try {
-            Connection cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1/bd_ins", "root", "");
-            PreparedStatement pst = cn.prepareStatement("select * from Estudiantes where ID = ?");
+            Connection cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1/bd_estudiantes", "root", "");
+            PreparedStatement pst = cn.prepareStatement("select * from Estudiantes where CodigoCarnet = ?");
             pst.setString(1, txt_buscar.getText().trim());
 
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
-                txt_nombre.setText(rs.getString("NombreAlumno"));
-                txt_grupo.setText(rs.getString("Grupo"));
+                 txt_ID.setText(rs.getString("CodigoCarnet"));
+                 
+                txt_nombre.setText(rs.getString("NombreEstudiante"));
+                txt_Direccion.setText(rs.getString("DireccionEstudiante"));
+                txt_Tel.setText(rs.getString("TelefonoEstudiante"));
+                 txt_Correo.setText(rs.getString("CorreoEstudiante"));
+                 txt_Estado.setText(rs.getString("EstadoEstudiante"));
+                
             } else {
                 JOptionPane.showMessageDialog(null, "Alumno no registrado.");
             }
@@ -186,11 +185,14 @@ public class RegistroAlumnos extends javax.swing.JFrame {
         try {
             String ID = txt_buscar.getText().trim();
 
-            Connection cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1/bd_ins", "root", "");
-            PreparedStatement pst = cn.prepareStatement("update alumnos set NombreAlumno = ?, Grupo = ? where ID = " + ID);
-
-            pst.setString(1, txt_nombre.getText().trim());
-            pst.setString(2, txt_grupo.getText().trim());
+            Connection cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1/bd_estudiantes", "root", "");
+            PreparedStatement pst = cn.prepareStatement("update Estudiantes set NombreEstudiante = ?, DireccionEstudiante = ?, TelefonoEstudiante =?, CorreoEstudiante =?, EstadoEstudiante =? where CodigoCarnet = " + ID);
+            pst.setString(1, txt_ID.getText().trim());
+            pst.setString(2, txt_nombre.getText().trim());
+            pst.setString(3, txt_Direccion.getText().trim());
+             pst.setString(4, txt_Tel.getText().trim());
+              pst.setString(5, txt_Correo.getText().trim());
+               pst.setString(6, txt_Estado.getText().trim());
             pst.executeUpdate();
 
             label_status.setText("Modificación exitosa.");
@@ -203,16 +205,22 @@ public class RegistroAlumnos extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         //Codigo que permite borrar registros en la base de datos
         try {
-            Connection cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1/bd_ins", "root", "");
-            PreparedStatement pst = cn.prepareStatement("delete from alumnos where ID = ?");
+            Connection cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1/bd_estudiantes", "root", "");
+            PreparedStatement pst = cn.prepareStatement("delete from Estudiantes where CodigoCarnet = ?");
 
             pst.setString(1, txt_buscar.getText().trim());
             pst.executeUpdate();
 
+       
+           
+            txt_ID.setText("");
             txt_nombre.setText("");
-            txt_grupo.setText("");
-            txt_buscar.setText("");
+            txt_Direccion.setText("");
 
+            txt_Tel.setText("");
+            txt_Correo.setText("");
+            txt_Estado.setText("");
+             txt_buscar.setText("");
             label_status.setText("Registro eliminado.");
 
         } catch (Exception e) {
@@ -261,7 +269,6 @@ public class RegistroAlumnos extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -275,7 +282,6 @@ public class RegistroAlumnos extends javax.swing.JFrame {
     private javax.swing.JTextField txt_ID;
     private javax.swing.JTextField txt_Tel;
     private javax.swing.JTextField txt_buscar;
-    private javax.swing.JTextField txt_grupo;
     private javax.swing.JTextField txt_nombre;
     // End of variables declaration//GEN-END:variables
 }
