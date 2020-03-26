@@ -186,13 +186,13 @@ public class RegistroAlumnos extends javax.swing.JFrame {
             String ID = txt_buscar.getText().trim();
 
             Connection cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1/bd_estudiantes", "root", "");
-            PreparedStatement pst = cn.prepareStatement("update Estudiantes set NombreEstudiante = ?, DireccionEstudiante = ?, TelefonoEstudiante = ?, CorreoEstudiante = ?, EstadoEstudiante = ? where CodigoCarnet = " + ID);
-           
-            pst.setString(1, txt_nombre.getText().trim());
-            pst.setString(2, txt_Direccion.getText().trim());
-             pst.setString(3, txt_Tel.getText().trim());
-              pst.setString(4, txt_Correo.getText().trim());
-               pst.setString(5, txt_Estado.getText().trim());
+            PreparedStatement pst = cn.prepareStatement("update Estudiantes set CodigoCarnet = ?,NombreEstudiante = ?, DireccionEstudiante = ?, TelefonoEstudiante = ?, CorreoEstudiante = ?, EstadoEstudiante = ? where CodigoCarnet = " + ID);
+             pst.setString(1, txt_ID.getText().trim());
+            pst.setString(2, txt_nombre.getText().trim());
+            pst.setString(3, txt_Direccion.getText().trim());
+             pst.setString(4, txt_Tel.getText().trim());
+              pst.setString(5, txt_Correo.getText().trim());
+               pst.setString(6, txt_Estado.getText().trim());
                
             pst.executeUpdate();
 
