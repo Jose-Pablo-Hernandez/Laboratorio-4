@@ -125,16 +125,16 @@ public class RegistroAlumnos extends javax.swing.JFrame {
         //Codigo que permite insertar registros en al base de datos
         try {
             Connection cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1/bd_estudiantes", "root", "");
-            PreparedStatement pst = cn.prepareStatement("insert into Estudiantes values(?,?,?,?,?,?,?)");
+            PreparedStatement pst = cn.prepareStatement("insert into Estudiantes values(?,?,?,?,?,?)");
 
-            pst.setString(1, "0");
-            pst.setString(2, txt_ID.getText().trim());
-            pst.setString(3, txt_nombre.getText().trim());
-            pst.setString(4, txt_Direccion.getText().trim());
-            pst.setString(5, txt_Tel.getText().trim());
+          
+            pst.setString(1, txt_ID.getText().trim());
+            pst.setString(2, txt_nombre.getText().trim());
+            pst.setString(3, txt_Direccion.getText().trim());
+            pst.setString(4, txt_Tel.getText().trim());
 
-            pst.setString(6, txt_Correo.getText().trim());
-            pst.setString(7, txt_Estado.getText().trim());
+            pst.setString(5, txt_Correo.getText().trim());
+            pst.setString(6, txt_Estado.getText().trim());
            
             pst.executeUpdate();
             txt_ID.setText("");
